@@ -161,7 +161,7 @@ to later filter by message size for example).
 
 ## Links
 
-Our OCI images: https://registry.hub.docker.com/r/pivotalrabbitmq/rabbitmq/tags
-Our Grafana deployment: https://grafana.lionhead.rabbitmq.com/ (there's also an older Kubernetes cluster at https://grafana.rabbitmq.com/)
-Most often you'll want the `RabbitMQ Performance Tests` dashboard: https://grafana.rabbitmq.com/d/1OSIKB4Vk/rabbitmq-performance-tests?orgId=1
-Logs (logs from all deployments are always collected): https://grafana.lionhead.rabbitmq.com/explore
+* Our OCI images: https://registry.hub.docker.com/r/pivotalrabbitmq/rabbitmq/tags
+* Our Grafana deployment: https://grafana.lionhead.rabbitmq.com/ (there's also an older Kubernetes cluster at https://grafana.rabbitmq.com/)
+* Most often you'll want the `RabbitMQ Performance Tests` dashboard: https://grafana.rabbitmq.com/d/1OSIKB4Vk/rabbitmq-performance-tests?orgId=1
+* Logs (logs from all deployments are always collected): https://grafana.lionhead.rabbitmq.com/explore
