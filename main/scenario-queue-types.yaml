@@ -1,0 +1,30 @@
+#@data/values
+---
+#!
+#! Compare different queue types and cluster sizes
+#!
+msg_sizes: [1000, 5000]
+
+clusters:
+  - name: cmq-v1
+    replicas: 3
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qa x-queue-version=1
+    mirroring: true
+  - name: cmq-v2
+    replicas: 3
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qa x-queue-version=2
+    mirroring: true
+  - name: cqv1
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qa x-queue-version=1
+  - name: cqv2
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qa x-queue-version=2
+  - name: qq
+    replicas: 3
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qq

@@ -1,0 +1,44 @@
+#@data/values
+---
+#!
+#! COMPARE THE KHEPRI BRANCH WITH MAIN
+#!
+#! Single node and clustered Khepri and main branch environments
+#! with different queue types and message sizes.
+#!
+msg_sizes: [12, 1000, 5000]
+
+clusters:
+  - name: main-cqv2
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qa x-queue-version=2
+  - name: khepri-cqv2
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:khepri-otp-max-bazel
+    env_flags: -qa x-queue-version=2
+    env: RABBITMQ_FEATURE_FLAGS="raft_based_metadata_store_phase1"
+    config: |
+      cluster_partition_handling = ignore
+  - name: main-solo-qq
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qq
+  - name: khepri-solo-qq
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:khepri-otp-max-bazel
+    env_flags: -qq
+    env: RABBITMQ_FEATURE_FLAGS="raft_based_metadata_store_phase1"
+    config: |
+      cluster_partition_handling = ignore
+  - name: main-cluster-qq
+    replicas: 3
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qq
+  - name: khepri-cluster-qq
+    replicas: 3
+    image: pivotalrabbitmq/rabbitmq:khepri-otp-max-bazel
+    env_flags: -qq
+    env: RABBITMQ_FEATURE_FLAGS="raft_based_metadata_store_phase1"
+    config: |
+      cluster_partition_handling = ignore

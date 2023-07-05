@@ -1,0 +1,16 @@
+#@data/values
+---
+#!
+#! Comapre 3-node and 5-node quorum queues
+#!
+msg_sizes: [100, 1000, 5000, 20000]
+
+clusters:
+  - name: main-3
+    replicas: 3
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qq
+  - name: main-5
+    replicas: 5
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qq -qa x-quorum-initial-group-size=5

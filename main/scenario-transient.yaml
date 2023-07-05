@@ -1,0 +1,16 @@
+#@data/values
+---
+#!
+#! Transient messages
+#!
+msg_sizes: [12, 100, 1000, 4000]
+
+clusters:
+ - name: cqv1
+   replicas: 1
+   image: pivotalrabbitmq/rabbitmq:v3.12.x-otp-max-bazel
+   env_flags: -qa x-queue-version=1 -mp deliveryMode=1
+ - name: cqv2
+   replicas: 1
+   image: pivotalrabbitmq/rabbitmq:v3.12.x-otp-max-bazel
+   env_flags: -qa x-queue-version=2 -mp deliveryMode=1

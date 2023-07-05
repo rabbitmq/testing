@@ -1,0 +1,32 @@
+#@data/values
+---
+#!
+#! https://blog.rabbitmq.com/posts/2023/05/rabbitmq-3.12-performance-improvements/
+#!
+msg_sizes: [12, 1000, 4000, 5000, 10000]
+
+clusters:
+  - name: v3-11-7-cqv1
+    replicas: 1
+    image: rabbitmq:3.11.7-management
+    env_flags: -qa x-queue-version=1
+  - name: v3-11-7-cqv1lazy
+    replicas: 1
+    image: rabbitmq:3.11.7-management
+    env_flags: -qa x-queue-version=1,x-queue-mode=lazy
+  - name: v3-11-7-cqv2
+    replicas: 1
+    image: rabbitmq:3.11.7-management
+    env_flags: -qa x-queue-version=2
+  - name: v3-11-7-cqv2lazy
+    replicas: 1
+    image: rabbitmq:3.11.7-management
+    env_flags: -qa x-queue-version=2,x-queue-mode=lazy
+  - name: v3-12-rc-cqv1
+    replicas: 1
+    image: rabbitmq:3.12.0-rc.2-management
+    env_flags: -qa x-queue-version=1
+  - name: v3-12-rc-cqv2
+    replicas: 1
+    image: rabbitmq:3.12.0-rc.2-management
+    env_flags: -qa x-queue-version=2

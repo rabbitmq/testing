@@ -1,0 +1,28 @@
+#@ load("@ytt:data", "data")
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jgroups-service-account
+  namespace: #@ data.values.namespace
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: jgroups-pod-reader
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: #@ "jgroups-api-access-" + data.values.namespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: jgroups-pod-reader
+subjects:
+- kind: ServiceAccount
+  name: jgroups-service-account
+  namespace: #@ data.values.namespace

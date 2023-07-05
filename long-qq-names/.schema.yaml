@@ -1,0 +1,18 @@
+#@data/values-schema
+---
+env_flags: ""
+msg_sizes: [12]
+script: ""
+script_name: client
+clusters:
+  - name: ""
+    replicas: 1
+    image: ""
+    env_flags: ""
+    config: ""
+    advanced_config: ""
+    erl_args: ""
+    env: ""
+    mirroring: false
+    plugins: [""]
+    prefix: ""

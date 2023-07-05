@@ -1,0 +1,18 @@
+#@data/values
+---
+#!
+#! MQTT
+#!
+msg_sizes: [1000]
+
+clusters:
+  - name: v3-12
+    replicas: 1
+    image: rabbitmq:3.12-management
+    plugins:
+      - rabbitmq_mqtt
+  - name: v3-11
+    replicas: 1
+    image: rabbitmq:3.11-management
+    plugins:
+      - rabbitmq_mqtt

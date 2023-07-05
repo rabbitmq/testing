@@ -1,0 +1,16 @@
+#@data/values
+---
+#!
+#! Measure the impact of message embedding (specific to classic queues)
+#!
+msg_embed_below_sizes: [2048, 4096, 8192]
+
+clusters:
+  - name: cqv1
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qa x-queue-version=1
+  - name: cqv2
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qa x-queue-version=2

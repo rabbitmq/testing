@@ -1,0 +1,18 @@
+#@data/values
+---
+#!
+#! Test the impact of the message timestamp feature
+#! (it was incorporated into the core in 3.12)
+msg_sizes: [12, 1000]
+
+clusters:
+  - name: main
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qa x-queue-version=2
+  - name: main-with-timestamp
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    env_flags: -qa x-queue-version=2
+    config: |
+      message_interceptors.incoming.set_header_timestamp.overwrite = true
