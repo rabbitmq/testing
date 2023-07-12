@@ -26,7 +26,6 @@ spec:
     additionalConfig: |
       queue_master_locator = client-local
       queue_leader_locator = client-local
-      log.console.level = debug
       cluster_formation.target_cluster_size_hint = (@= str(cluster.replicas) @)
       tcp_listen_options.sndbuf = 196608
       tcp_listen_options.recbuf = 196608
@@ -34,9 +33,9 @@ spec:
     #@yaml/text-templated-strings
     advancedConfig: |
         [
-        (@= cluster.advanced_config @)
         {rabbit, [
-            {vm_memory_high_watermark,{relative,0.8}}
+            {vm_memory_high_watermark,{relative,0.8}},
+            {credit_flow_default_credit,{0,0}}
         ]},
         {prometheus, [
             {global_labels,[{<<"msg_size">>, (@= str(msg_size) @)}]}
