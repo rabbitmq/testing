@@ -15,7 +15,7 @@ TIME_PER_TEST=300
 # the test(s) to run
 main() {
     # one queue, as fast as you can
-    perf_test one_fast -x 1 -y 1 -c 3000 -u one_fast -qa x-max-length=1000000 -ad false -f persistent
+    perf_test one_fast -x 1 -y 1 -c 3000 -u one_fast -qa x-max-length=5000000 -ad false -f persistent
     delete_all_queues
 
     # publish at full speed, no consumers
