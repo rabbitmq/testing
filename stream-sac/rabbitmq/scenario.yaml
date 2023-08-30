@@ -1,0 +1,141 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: main-s1000
+spec:
+  replicas: 3
+  image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+  resources:
+    requests:
+      cpu: 14
+      memory: 12Gi
+    limits:
+      cpu: 14
+      memory: 12Gi
+  persistence:
+    storageClassName: premium-rwo
+    storage: 150Gi
+  rabbitmq:
+    additionalPlugins:
+    - rabbitmq_stream
+    - rabbitmq_stream_management
+    additionalConfig: |+
+      log.console.level = debug
+      queue_master_locator = client-local
+      queue_leader_locator = client-local
+      cluster_formation.target_cluster_size_hint = 3
+      tcp_listen_options.sndbuf = 196608
+      tcp_listen_options.recbuf = 196608
+
+    advancedConfig: |
+      [
+      {rabbit, [
+          {vm_memory_high_watermark,{relative,0.8}},
+          {credit_flow_default_credit,{0,0}}
+      ]},
+      {prometheus, [
+          {global_labels,[{<<"msg_size">>, 1000}]}
+      ]}
+      ].
+    envConfig: |+
+      SERVER_ADDITIONAL_ERL_ARGS="+JPperf true "
+
+  service:
+    type: LoadBalancer
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - rabbitmq
+        topologyKey: kubernetes.io/hostname
+  override:
+    statefulSet:
+      spec:
+        template:
+          metadata:
+            annotations:
+              cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+          spec:
+            nodeSelector:
+              rabbitmq: cluster
+            containers:
+            - name: rabbitmq
+              imagePullPolicy: Always
+            initContainers:
+            - name: setup-container
+              imagePullPolicy: Always
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: v3-11-18-s1000
+spec:
+  replicas: 3
+  image: rabbitmq:3.11.18-management
+  resources:
+    requests:
+      cpu: 14
+      memory: 12Gi
+    limits:
+      cpu: 14
+      memory: 12Gi
+  persistence:
+    storageClassName: premium-rwo
+    storage: 150Gi
+  rabbitmq:
+    additionalPlugins:
+    - rabbitmq_stream
+    - rabbitmq_stream_management
+    additionalConfig: |+
+      log.console.level = debug
+      queue_master_locator = client-local
+      queue_leader_locator = client-local
+      cluster_formation.target_cluster_size_hint = 3
+      tcp_listen_options.sndbuf = 196608
+      tcp_listen_options.recbuf = 196608
+
+    advancedConfig: |
+      [
+      {rabbit, [
+          {vm_memory_high_watermark,{relative,0.8}},
+          {credit_flow_default_credit,{0,0}}
+      ]},
+      {prometheus, [
+          {global_labels,[{<<"msg_size">>, 1000}]}
+      ]}
+      ].
+    envConfig: |+
+      SERVER_ADDITIONAL_ERL_ARGS="+JPperf true "
+
+  service:
+    type: LoadBalancer
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - rabbitmq
+        topologyKey: kubernetes.io/hostname
+  override:
+    statefulSet:
+      spec:
+        template:
+          metadata:
+            annotations:
+              cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+          spec:
+            nodeSelector:
+              rabbitmq: cluster
+            containers:
+            - name: rabbitmq
+              imagePullPolicy: Always
+            initContainers:
+            - name: setup-container
+              imagePullPolicy: Always

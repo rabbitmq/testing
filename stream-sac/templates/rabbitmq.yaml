@@ -1,0 +1,102 @@
+#@ load("@ytt:data", "data")
+#@ for msg_size in data.values.msg_sizes:
+#@ for cluster in data.values.clusters:
+#@ cluster_name = cluster.name + "-s" + str(msg_size)
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: #@ cluster_name
+spec:
+  replicas: #@ cluster.replicas
+  image: #@ cluster.image
+  resources:
+    requests:
+      cpu: 14
+      memory: 12Gi
+    limits:
+      cpu: 14
+      memory: 12Gi
+  persistence:
+    storageClassName: premium-rwo
+    storage: "150Gi"
+  rabbitmq:
+    additionalPlugins: #@ ["rabbitmq_stream", "rabbitmq_stream_management"] + cluster.plugins
+    #@yaml/text-templated-strings
+    additionalConfig: |
+      log.console.level = debug
+      queue_master_locator = client-local
+      queue_leader_locator = client-local
+      cluster_formation.target_cluster_size_hint = (@= str(cluster.replicas) @)
+      tcp_listen_options.sndbuf = 196608
+      tcp_listen_options.recbuf = 196608
+      (@= cluster.config @)
+    #@yaml/text-templated-strings
+    advancedConfig: |
+        [
+        {rabbit, [
+            {vm_memory_high_watermark,{relative,0.8}},
+            {credit_flow_default_credit,{0,0}}
+        ]},
+        {prometheus, [
+            {global_labels,[{<<"msg_size">>, (@= str(msg_size) @)}]}
+        ]}
+        ].
+    #@yaml/text-templated-strings
+    envConfig: |
+      SERVER_ADDITIONAL_ERL_ARGS="+JPperf true (@= cluster.erl_args @)"
+      (@= cluster.env @)
+  service:
+    type: LoadBalancer
+  #! do no deploy next to other nodes/instances
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                - rabbitmq
+          topologyKey: kubernetes.io/hostname
+  override:
+    statefulSet:
+      spec:
+        template:
+          metadata:
+            annotations:
+              #! prevents pods from getting evicted
+              cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+          spec:
+            nodeSelector:
+              #! deploy to large VMs
+              rabbitmq: cluster
+            containers:
+            #! we often use mutable branch tags for images
+              - name: rabbitmq
+                imagePullPolicy: Always
+            initContainers:
+              - name: setup-container
+                imagePullPolicy: Always
+
+#@ if cluster.mirroring:
+---
+#! queues with names starting with `cmq-` are mirrored
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: #@ cluster_name + "-mirroring-policy"
+spec:
+  name: mirroring-policy
+  pattern: ".*"
+  applyTo: "queues"
+  definition:
+    ha-mode: exactly
+    ha-params: 3
+    ha-sync-mode: automatic
+  rabbitmqClusterReference:
+    name: #@ cluster_name
+#@ end
+
+#@ end
+#@ end

@@ -1,0 +1,14 @@
+#@data/values
+---
+#!
+#! Compare different queue types and cluster sizes
+#!
+msg_sizes: [1000]
+
+clusters:
+  - name: main
+    replicas: 3
+    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+  - name: v3-11-18
+    replicas: 3
+    image: rabbitmq:3.11.18-management
