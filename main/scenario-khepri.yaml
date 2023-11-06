@@ -17,7 +17,7 @@ clusters:
     replicas: 1
     image: pivotalrabbitmq/rabbitmq:khepri-otp-max-bazel
     env_flags: -qa x-queue-version=2
-    env: RABBITMQ_FEATURE_FLAGS="raft_based_metadata_store_phase1"
+    env: RABBITMQ_FEATURE_FLAGS="khepri_db"
     config: |
       cluster_partition_handling = ignore
   - name: main-solo-qq
@@ -28,7 +28,7 @@ clusters:
     replicas: 1
     image: pivotalrabbitmq/rabbitmq:khepri-otp-max-bazel
     env_flags: -qq
-    env: RABBITMQ_FEATURE_FLAGS="raft_based_metadata_store_phase1"
+    env: RABBITMQ_FEATURE_FLAGS="khepri_db"
     config: |
       cluster_partition_handling = ignore
   - name: main-cluster-qq
@@ -39,6 +39,6 @@ clusters:
     replicas: 3
     image: pivotalrabbitmq/rabbitmq:khepri-otp-max-bazel
     env_flags: -qq
-    env: RABBITMQ_FEATURE_FLAGS="raft_based_metadata_store_phase1"
+    env: RABBITMQ_FEATURE_FLAGS="khepri_db"
     config: |
       cluster_partition_handling = ignore
