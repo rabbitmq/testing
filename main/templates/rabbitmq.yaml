@@ -24,6 +24,7 @@ spec:
     additionalPlugins: #@ ["rabbitmq_stream", "rabbitmq_stream_management"] + cluster.plugins
     #@yaml/text-templated-strings
     additionalConfig: |
+      log.console.level = debug
       queue_master_locator = client-local
       queue_leader_locator = client-local
       cluster_formation.target_cluster_size_hint = (@= str(cluster.replicas) @)
@@ -45,8 +46,8 @@ spec:
     envConfig: |
       SERVER_ADDITIONAL_ERL_ARGS="+JPperf true (@= cluster.erl_args @)"
       (@= cluster.env @)
-  service:
-    type: LoadBalancer
+  #! service:
+  #!   type: LoadBalancer
   #! do no deploy next to other nodes/instances
   affinity:
     podAntiAffinity:
