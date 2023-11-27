@@ -1,10 +1,7 @@
 #@data/values
 ---
 #!
-#! COMPARE THE KHEPRI BRANCH WITH MAIN
-#!
-#! Single node and clustered Khepri and main branch environments
-#! with different queue types and message sizes.
+#! Deploy clusters with khepri and mnesia
 #!
 msg_sizes: [12]
 
