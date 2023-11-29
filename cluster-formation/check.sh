@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 
 for cluster in $(ls -d output/*/*/); do

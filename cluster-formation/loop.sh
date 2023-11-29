@@ -1,4 +1,6 @@
-#!/bin/bash -x
+#!/usr/bin/env bash
+
+set -x
 
 iterations=${1:?"Usage: $0 <iterations>"}
 
