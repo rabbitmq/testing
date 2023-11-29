@@ -49,7 +49,7 @@ To run an existing test you may do something like this:
 $ cd main
 
 # generate all permutations
-$ ../generate.sh scenario-qq.yaml
+$ ./generate.sh scenario-qq.yaml
 
 # deploy the clusters
 $ kubectl apply -f rabbitmq/
