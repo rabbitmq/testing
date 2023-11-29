@@ -63,7 +63,9 @@ spec:
             #! we often use mutable branch tags for images
               - name: rabbitmq
                 imagePullPolicy: Always
-#!                env:
+                env:
+                  - name: RABBITMQ_LOG
+                    value: "debug"
 #!                  - name: ERL_DIST_PORT
 #!                    value: "25672"
             initContainers:
