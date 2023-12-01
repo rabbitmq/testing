@@ -89,7 +89,7 @@ and your branch, you can:
 1. go the the `main` folder
 2. copy (or just modify) an existing sceanario, probably by changing the tag; we build OCI images on every commit,
    you will probably want to use branch tag, eg. `pivotalrabbitmq/rabbitmq:khepri-otp-max` would be a tag for the
-   most recent (successful!) `khepri` build; find more tags here: https://registry.hub.docker.com/r/pivotalrabbitmq/rabbitmq/tags
+   most recent (successful!) `khepri` build; find more tags here: https://hub.docker.com/r/pivotalrabbitmq/rabbitmq/tags
 3. You can adjust the settings, for example if your change should only affect quorum queues, add `-qq` to `env_flags`
 4. Follow the steps above (`./generate my-scenario.yaml; kubectl apply -f rabbitmq client`)
 
