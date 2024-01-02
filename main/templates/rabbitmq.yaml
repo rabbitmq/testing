@@ -10,6 +10,10 @@ metadata:
 spec:
   replicas: #@ cluster.replicas
   image: #@ cluster.image
+#@ if cluster.image.startswith("registry.pivotal.io"):
+  imagePullSecrets:
+    - name: pivotal
+#@ end
   resources:
     requests:
       cpu: 14
