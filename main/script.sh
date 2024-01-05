@@ -95,7 +95,7 @@ perf_test() {
         --metrics-command-line-arguments \
         --metrics-format compact \
         --use-millis \
-        --confirm-timeout 300 \
+        --confirm-timeout -1 \
         --servers-startup-timeout 300 \
         --producer-random-start-delay 1 \
         --time $TIME_PER_TEST \
