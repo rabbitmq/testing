@@ -35,7 +35,7 @@ Lastly, the perf-test template relies on perf-test synchronisation mechanism to 
 (otherwise, given for example a Kubernetes node scale-out, some tests could start a few minutes later). For this mechanism to work,
 you need permissions in the namespace you are deploying to.
 ```
-ytt --data-value namespace=MY_NAMESPACE -f permissions.yaml | kaf -
+ytt --data-value namespace=MY_NAMESPACE -f permissions.yaml | kubectl apply -f -
 ```
 
 Note: in our cluster existing namespaces already have these permissions. This is a one-off thing you need for new namespaces only.
