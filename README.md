@@ -98,7 +98,7 @@ and it was just a matter of testing a specific branch that is now merged, you ca
 If it is something that could be reused, you can just push a new scenario file.
 
 Here's a sample scenario file comparing QQs between `main` and 3.11.7:
-```
+```yaml
 #@data/values
 ---
 msg_sizes: [12, 100, 1000, 5000, 25000, 100000]
@@ -123,7 +123,7 @@ The message size will be appended to the cluster name, so you'll get `main-s12`,
 
 Here's another scenario example. In this case we use the same image but we set different `--queue-args` to change the queue type.
 
-```
+```yaml
 clusters:
   - name: cqv1
     replicas: 1
