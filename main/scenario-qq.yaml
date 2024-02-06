@@ -1,7 +1,7 @@
 #@data/values
 ---
 #!
-#! Comapre 3-node and 5-node quorum queues
+#! Compare 3-node and 5-node quorum queues
 #!
 msg_sizes: [100, 1000, 5000, 20000]
 
