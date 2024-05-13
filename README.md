@@ -88,7 +88,7 @@ and your branch, you can:
 
 1. go the the `main` folder
 2. copy (or just modify) an existing sceanario, probably by changing the tag; we build OCI images on every commit,
-   you will probably want to use branch tag, eg. `pivotalrabbitmq/rabbitmq:khepri-otp-max` would be a tag for the
+   you will probably want to use branch tag, eg. `pivotalrabbitmq/rabbitmq:khepri` would be a tag for the
    most recent (successful!) `khepri` build; find more tags here: https://hub.docker.com/r/pivotalrabbitmq/rabbitmq/tags
 3. You can adjust the settings, for example if your change should only affect quorum queues, add `-qq` to `env_flags`
 4. Follow the steps above (`./generate my-scenario.yaml; kubectl apply -f rabbitmq client`)
@@ -110,7 +110,7 @@ clusters:
     env_flags: -qq
   - name: main
     replicas: 3
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qq
 ```
 
@@ -127,15 +127,15 @@ Here's another scenario example. In this case we use the same image but we set d
 clusters:
   - name: cqv1
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=1
   - name: cqv2
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=2
   - name: qq
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qq
 ```
 
