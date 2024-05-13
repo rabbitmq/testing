@@ -39,6 +39,7 @@ spec:
     advancedConfig: |
         [
         {rabbit, [
+            (@= cluster.advanced_config @)
             {vm_memory_high_watermark,{relative,0.8}},
             {credit_flow_default_credit,{0,0}}
         ]},
