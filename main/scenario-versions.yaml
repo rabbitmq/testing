@@ -11,10 +11,10 @@ clusters:
     image: rabbitmq:3.12.0-management
   - name: main-solo
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
   - name: v3-12-0-cluster
     replicas: 3
     image: rabbitmq:3.12.0-management
   - name: main-cluster
     replicas: 3
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main

@@ -15,7 +15,7 @@ clusters:
 #!      queue_index_embed_msgs_below = 4096
 #!  - name: main-embed-below-4096
 #!    replicas: 1
-#!    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+#!    image: pivotalrabbitmq/rabbitmq:main
 #!    env_flags: -qa x-queue-version=2
 #!    config: |
 #!      queue_index_embed_msgs_below = 4096
@@ -39,7 +39,7 @@ clusters:
       queue_index_embed_msgs_below = 10240
   - name: main-embed-below-10240
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=2
     config: |
       queue_index_embed_msgs_below = 10240

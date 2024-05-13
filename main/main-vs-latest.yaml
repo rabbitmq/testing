@@ -23,33 +23,33 @@ clusters:
     env_flags: -qa x-queue-version=2
   - name: main-qq
     replicas: 3
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qq
   - name: main-cqv1
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=1
   - name: main-cqv2
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=2
   - name: main-khepri-qq
     replicas: 3
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qq
     env: RABBITMQ_FEATURE_FLAGS="khepri_db,message_containers,restart_streams,stream_filtering,stream_sac_coordinator_unblock_group"
     config: |
       cluster_partition_handling = ignore
   - name: main-khepri-cqv2
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=2
     env: RABBITMQ_FEATURE_FLAGS="khepri_db,message_containers,restart_streams,stream_filtering,stream_sac_coordinator_unblock_group"
     config: |
       cluster_partition_handling = ignore
   - name: main-khepri-cqv1
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=1
     env: RABBITMQ_FEATURE_FLAGS="khepri_db,message_containers,restart_streams,stream_filtering,stream_sac_coordinator_unblock_group"
     config: |

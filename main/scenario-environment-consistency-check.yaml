@@ -10,25 +10,25 @@ msg_sizes: [100, 5000]
 clusters:
   - name: cq-env1
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=2
   - name: cq-env2
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=2
   - name: cq-env3
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qa x-queue-version=2
   - name: qq-env1
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qq
   - name: qq-env2
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qq
   - name: qq-env3
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main-otp-max-bazel
+    image: pivotalrabbitmq/rabbitmq:main
     env_flags: -qq
