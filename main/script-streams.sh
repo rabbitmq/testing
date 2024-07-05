@@ -63,6 +63,8 @@ stream_perf_test() {
     java  \
         -jar $STREAM_PERF_TEST_JAR $* -s $MSG_SIZE $ENV_FLAGS \
         --uris rabbitmq-stream://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE} \
+        --id ${WORKLOAD_NAME} \
+        --expected-instances ${ENV_COUNT} \
         --monitoring \
         --prometheus \
         --metrics-command-line-arguments \
