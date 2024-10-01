@@ -1,0 +1,18 @@
+## every 5 minutes, forcefully kill one of the pods
+---
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Schedule
+metadata:
+  name: shutdown-pod
+spec:
+  schedule: '@every 5m'
+  concurrencyPolicy: 'Allow'
+  type: 'PodChaos'
+  podChaos:
+    action: pod-kill
+    mode: one
+    selector:
+      namespaces:
+      - chaos-tests
+      labelSelectors:
+        app.kubernetes.io/name: rmq

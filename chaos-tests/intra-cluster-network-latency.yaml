@@ -1,0 +1,26 @@
+## inject network latency between server-1 and server-2
+---
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: intra-cluster-latency
+  namespace: chaos-tests
+spec:
+  action: delay
+  delay:
+    latency: "100ms"
+  mode: one
+  selector:
+    namespaces:
+    - chaos-tests
+    labelSelectors:
+      app.kubernetes.io/part-of: rabbitmq
+      apps.kubernetes.io/pod-index: "1"
+  direction: both
+  target:
+    selector:
+      namespaces:
+      - chaos-tests
+      labelSelectors:
+        app.kubernetes.io/part-of: rabbitmq
+        apps.kubernetes.io/pod-index: "2"
