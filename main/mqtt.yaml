@@ -1,0 +1,11 @@
+#@data/values
+---
+msg_sizes: [1000]
+
+clusters:
+  - name: main
+    replicas: 3
+    image: pivotalrabbitmq/rabbitmq:main
+    env_flags: ""
+    plugins:
+      - rabbitmq_mqtt

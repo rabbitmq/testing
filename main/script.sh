@@ -14,6 +14,8 @@ TIME_PER_TEST=300
 
 # the test(s) to run
 main() {
+    omq_mqtt churn -x 20 -y 20 -r 1 --publish-to 'sensor/%d' --consume-from '/topic/sensor/%d' --mqtt-consumer-qos 1 --mqtt-publisher-qos 1
+
     # one queue, as fast as you can
     perf_test one_fast -x 1 -y 1 -c 3000 -u one_fast -qa x-max-length=5000000 -ad false -f persistent
     delete_all_queues
@@ -120,6 +122,21 @@ stream_perf_test() {
         --confirm-latency \
         --rpc-timeout 200 \
         --time ${TIME_PER_TEST}
+
+    # pause between test
+    sleep 30
+}
+
+omq_mqtt() {
+    WORKLOAD_NAME=${1}
+    shift
+
+
+    /omq mqtt $* -s $MSG_SIZE $ENV_FLAGS \
+        --publisher-uri mqtt://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE} \
+        --consumer-uri mqtt://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE} \
+        --time ${TIME_PER_TEST}s \
+        --metric-tags rabbitmq_cluster=${RABBITMQ_SERVICE},workload_name=${WORKLOAD_NAME},msg_size=${MSG_SIZE}
 
     # pause between test
     sleep 30
