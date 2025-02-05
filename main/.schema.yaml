@@ -2,6 +2,7 @@
 ---
 env_flags: ""
 msg_sizes: [12]
+queue_type: classic
 script: ""
 script_name: client
 clusters:
@@ -11,7 +12,13 @@ clusters:
     env_flags: ""
     config: ""
     advanced_config: ""
+    kernel_config: ""
+    queue_type: "cqv2"
     erl_args: ""
     env: ""
     mirroring: false
     plugins: [""]
+lavinmq_clusters:
+  - name: ""
+    image: ""
+    env_flags: ""
