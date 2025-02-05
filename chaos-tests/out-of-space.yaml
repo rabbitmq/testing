@@ -1,0 +1,16 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: IOChaos
+metadata:
+  name: out-of-space-NODE
+  namespace: chaos-tests
+spec:
+  action: fault
+  mode: one
+  selector:
+    labelSelectors:
+      statefulset.kubernetes.io/pod-name: NODE
+  volumePath: /var/lib/rabbitmq
+  errno: 28
+  duration: '120s'
+  methods:
+  - WRITE
