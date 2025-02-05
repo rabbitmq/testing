@@ -6,23 +6,21 @@
 #!msg_sizes: [5000000, 25000000]
 msg_sizes: [100, 1000, 5000, 20000]
 
+queue_type: quorum
+
 #! Set to the version to comapre to
-#@ branch = "rabbitmq-69aed84-ra-daf0beb-26.2.5.4"
+#@ branch = "v4.0.x"
 
 clusters:
   - name: main-single
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main
-    env_flags: "-qq"
+    image: pivotalrabbitmq/rabbitmq:main-otp27
   - name: main-cluster
     replicas: 3
-    image: pivotalrabbitmq/rabbitmq:main
-    env_flags: "-qq"
+    image: pivotalrabbitmq/rabbitmq:main-otp27
   - name: ra-pr475-single
     replicas: 1
-    image: #@ "pivotalrabbitmq/rabbitmq:" + branch
-    env_flags: "-qq"
+    image: #@ "pivotalrabbitmq/rabbitmq:" + branch + "-otp27"
   - name: ra-pr475-cluster
     replicas: 3
-    image: #@ "pivotalrabbitmq/rabbitmq:" + branch
-    env_flags: "-qq"
+    image: #@ "pivotalrabbitmq/rabbitmq:" + branch + "-otp27"
