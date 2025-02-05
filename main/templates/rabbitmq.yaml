@@ -25,19 +25,20 @@ spec:
     storageClassName: premium-rwo
     storage: "150Gi"
   rabbitmq:
-    additionalPlugins: #@ ["rabbitmq_stream", "rabbitmq_stream_management"] + cluster.plugins
+    additionalPlugins: #@ ["rabbitmq_stream", "rabbitmq_mqtt", "rabbitmq_stream_management"] + cluster.plugins
     #@yaml/text-templated-strings
     additionalConfig: |
       log.console.level = debug
       queue_master_locator = client-local
       queue_leader_locator = client-local
       cluster_formation.target_cluster_size_hint = (@= str(cluster.replicas) @)
-      tcp_listen_options.sndbuf = 196608
-      tcp_listen_options.recbuf = 196608
+      tcp_listen_options.sndbuf = 131072
+      tcp_listen_options.recbuf = 131072
       (@= cluster.config @)
     #@yaml/text-templated-strings
     advancedConfig: |
         [
+        (@= cluster.kernel_config @)
         {rabbit, [
             (@= cluster.advanced_config @)
             {vm_memory_high_watermark,{relative,0.8}},
@@ -83,25 +84,6 @@ spec:
             initContainers:
               - name: setup-container
                 imagePullPolicy: Always
-
-#@ if cluster.mirroring:
----
-#! queues with names starting with `cmq-` are mirrored
-apiVersion: rabbitmq.com/v1beta1
-kind: Policy
-metadata:
-  name: #@ cluster_name + "-mirroring-policy"
-spec:
-  name: mirroring-policy
-  pattern: ".*"
-  applyTo: "queues"
-  definition:
-    ha-mode: exactly
-    ha-params: 3
-    ha-sync-mode: automatic
-  rabbitmqClusterReference:
-    name: #@ cluster_name
-#@ end
 
 #@ end
 #@ end
