@@ -1,0 +1,16 @@
+#@data/values
+---
+#!
+#! 
+#!
+msg_sizes: [100, 1000]
+
+queue_type: classic
+
+clusters:
+  - name: main-otp26
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp26
+  - name: main-otp27
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp27
