@@ -1,4 +1,16 @@
 #@ load("@ytt:data", "data")
+apiVersion: v1
+kind: Service
+metadata:
+  name: omq-sync
+spec:
+  selector:
+    component: perftest
+  ports:
+    - protocol: TCP
+      port: 7946
+      targetPort: 7946
+---
 #@ for msg_size in data.values.msg_sizes:
 #@ for cluster in data.values.clusters:
 #@ cluster_name = cluster.name + "-s" + str(msg_size)
@@ -77,6 +89,7 @@ spec:
         ports:
         - containerPort: 8080
           name: prometheus
+        - containerPort: 7946
         env:
         - name: RABBITMQ_USER
           valueFrom:
@@ -97,6 +110,8 @@ spec:
           value: #@ str(len(data.values.msg_sizes) * len(data.values.clusters))
         - name: MSG_SIZE
           value: #@ str(msg_size)
+        - name: QUEUE_TYPE
+          value: #@ data.values.queue_type
         - name: MY_POD_NAMESPACE
           valueFrom:
             fieldRef:
