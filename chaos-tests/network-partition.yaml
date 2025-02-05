@@ -23,3 +23,27 @@ spec:
         app.kubernetes.io/part-of: rabbitmq
         apps.kubernetes.io/pod-index: "1"
     mode: one
+# ---
+# apiVersion: chaos-mesh.org/v1alpha1
+# kind: NetworkChaos
+# metadata:
+#   name: partition-0-from-2
+#   namespace: chaos-tests
+# spec:
+#   action: partition
+#   mode: one
+#   selector:
+#     namespaces:
+#     - chaos-tests
+#     labelSelectors:
+#       app.kubernetes.io/part-of: rabbitmq
+#       apps.kubernetes.io/pod-index: "0"
+#   direction: both
+#   target:
+#     selector:
+#       namespaces:
+#       - chaos-tests
+#       labelSelectors:
+#         app.kubernetes.io/part-of: rabbitmq
+#         apps.kubernetes.io/pod-index: "2"
+#     mode: one
