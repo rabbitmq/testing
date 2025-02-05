@@ -15,4 +15,4 @@ spec:
       namespaces:
       - chaos-tests
       labelSelectors:
-        app.kubernetes.io/name: rmq
+        app.kubernetes.io/component: rabbitmq
