@@ -1,0 +1,18 @@
+#@data/values
+---
+#!
+#! 
+#!
+msg_sizes: [100, 1000, 5000]
+
+queue_type: classic
+
+clusters:
+  - name: main-mnesia
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp27
+  - name: main-khepri
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:main-otp27
+    env: |
+      RABBITMQ_FEATURE_FLAGS="+khepri_db"
