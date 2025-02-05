@@ -1,0 +1,65 @@
+#@data/values
+---
+#!
+#! 
+#!
+
+msg_sizes: [100, 1000, 5000, 20000]
+
+queue_type: classic
+
+clusters:
+  - name: buf-8192-otp26
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp26
+    config: |
+      tcp_listen_options.buffer = 8192
+  - name: buf-8192-otp27
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp27
+    config: |
+      tcp_listen_options.buffer = 8192
+
+  - name: buf-16384-otp26
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp26
+    config: |
+      tcp_listen_options.buffer = 16384
+  - name: buf-16384-otp27
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp27
+    config: |
+      tcp_listen_options.buffer = 16384
+
+  - name: buf-32768-otp26
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp26
+    config: |
+      tcp_listen_options.buffer = 32768
+  - name: buf-32768-otp27
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp27
+    config: |
+      tcp_listen_options.buffer = 32768
+
+  - name: buf-65536-otp26
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp26
+    config: |
+      tcp_listen_options.buffer = 65536
+  - name: buf-65536-otp27
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp27
+    config: |
+      tcp_listen_options.buffer = 65536
+
+  - name: buf-131072-otp26
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp26
+    config: |
+      tcp_listen_options.buffer = 131072
+  - name: buf-131072-otp27
+    replicas: 1
+    image: pivotalrabbitmq/rabbitmq:sha-79adb6fff7146cc8ad05e7dc1e341e8e570a8c93-otp27
+    config: |
+      tcp_listen_options.buffer = 131072
