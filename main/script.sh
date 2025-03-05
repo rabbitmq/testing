@@ -8,7 +8,6 @@ RABBITMQ_SERVICE=${RABBITMQ_SERVICE:-localhost}
 RABBITMQ_USER=${RABBITMQ_USER:-guest}
 RABBITMQ_PASS=${RABBITMQ_PASS:-guest}
 QUEUE_TYPE=${QUEUE_TYPE:-"classic"}
-QUEUE_TYPE_PERF_TEST_FLAG=$(queue_type_perf_test_flag $QUEUE_TYPE)
 MSG_SIZE=${MSG_SIZE:-12}
 
 TIME_PER_TEST=300
@@ -99,6 +98,25 @@ main() {
 ## HELPERS (hopefully no need to change anything there)
 ##
 
+queue_type_perf_test_flag() {
+    case $1 in
+        "classic")
+            echo "-ad false -f persistent"
+            ;;
+        "quorum")
+            echo "--quorum-queue"
+            ;;
+        "stream")
+            echo "--stream-queue"
+            ;;
+        *)
+            echo "Unknown queue type: $1"
+            exit 1
+            ;;
+    esac
+}
+
+
 omq_amqp() {
     WORKLOAD_NAME=${1}
     shift
@@ -118,13 +136,14 @@ omq_amqp() {
 # note - by default we connect to server-0 for consistency between envs and tests
 # this is bad for some tests; remove `-server-0.${RABBITMQ_SERVICE}-nodes` if you don't want that
 perf_test() {
+    QUEUE_TYPE_FLAG=$(queue_type_perf_test_flag $QUEUE_TYPE)
     WORKLOAD_NAME=${1}
     shift
 
     # connect to server-0 for consistency between environments and test runs (connection-queue locality)
     # expose Prometheus metrics with additional tags for filtering in the dashboard
     # producer random startup delay to avoid batches of messages being sent at the same time
-    java -jar $AMQP_PERF_TEST_JAR $* -s $MSG_SIZE $QUEUE_TYPE_PERF_TEST_FLAG $ENV_FLAGS \
+    java -jar $AMQP_PERF_TEST_JAR $* -s $MSG_SIZE $QUEUE_TYPE_FLAG $ENV_FLAGS \
         --uri amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE}-server-0.${RABBITMQ_SERVICE}-nodes \
         --metrics-prometheus \
         --expected-instances ${ENV_COUNT} \
@@ -161,25 +180,6 @@ stream_perf_test() {
     # pause between test
     sleep 30
 }
-
-queue_type_perf_test_flag() {
-    case $1 in
-        "classic")
-            echo "-ad false -f persistent"
-            ;;
-        "quorum")
-            echo "--quorum-queue"
-            ;;
-        "stream")
-            echo "--stream-queue"
-            ;;
-        *)
-            echo "Unknown queue type: $1"
-            exit 1
-            ;;
-    esac
-}
-
 # call rabbitmqadmin against the test env
 rabbitmq_admin() {
         rabbitmqadmin -H ${RABBITMQ_SERVICE} -u ${RABBITMQ_USER} -p ${RABBITMQ_PASS} $@
