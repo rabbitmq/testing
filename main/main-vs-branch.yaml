@@ -18,9 +18,9 @@ clusters:
   - name: main-cluster
     replicas: 3
     image: pivotalrabbitmq/rabbitmq:main-otp27
-  - name: ra-pr475-single
+  - name: #@ branch + "-single"
     replicas: 1
     image: #@ "pivotalrabbitmq/rabbitmq:" + branch + "-otp27"
-  - name: ra-pr475-cluster
+  - name: #@ branch + "-cluster"
     replicas: 3
     image: #@ "pivotalrabbitmq/rabbitmq:" + branch + "-otp27"
