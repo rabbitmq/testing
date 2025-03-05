@@ -10,10 +10,6 @@ metadata:
 spec:
   replicas: #@ cluster.replicas
   image: #@ cluster.image
-#@ if cluster.image.startswith("registry.pivotal.io"):
-  imagePullSecrets:
-    - name: pivotal
-#@ end
   resources:
     requests:
       cpu: 14
@@ -32,8 +28,9 @@ spec:
       queue_master_locator = client-local
       queue_leader_locator = client-local
       cluster_formation.target_cluster_size_hint = (@= str(cluster.replicas) @)
-      tcp_listen_options.sndbuf = 131072
-      tcp_listen_options.recbuf = 131072
+      # might be needed when testing older versions without dynamic buffers (https://github.com/rabbitmq/rabbitmq-server/pull/13363)
+      # tcp_listen_options.sndbuf = 131072
+      # tcp_listen_options.recbuf = 131072
       (@= cluster.config @)
     #@yaml/text-templated-strings
     advancedConfig: |
