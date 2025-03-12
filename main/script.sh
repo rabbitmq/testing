@@ -62,18 +62,18 @@ main() {
     delete_all_queues
 
     # publish expiring messages and dead letter them
-    rabbitmq_admin declare policy name=ttl_dlq pattern=publish_only_ttl definition='{"dead-letter-exchange":"","dead-letter-routing-key":"ttl_dlq"}' apply-to=queues
+    rabbitmqadmin declare policy --name ttl_dlq --pattern publish_only_ttl --definition '{"dead-letter-exchange":"","dead-letter-routing-key":"ttl_dlq"}' --apply-to queues
     perf_test declare_ttl_dlq -u ttl_dlq  -C 1 -c 1
     perf_test publish_only_ttl -x 1 -y 0 -c 1 -u publish_only_ttl --message-properties expiration=10000
-    rabbitmq_admin delete policy name=ttl_dlq
+    rabbitmqadmin delete policy --name ttl_dlq
     delete_all_queues
 
     # initially as above but without TTL, then NACK em all
-    rabbitmq_admin declare policy name=nack_dlq pattern=publish_then_nack definition='{"dead-letter-exchange":"","dead-letter-routing-key":"nack_dlq"}' apply-to=queues
+    rabbitmqadmin declare policy --name nack_dlq --pattern publish_then_nack --definition '{"dead-letter-exchange":"","dead-letter-routing-key":"nack_dlq"}' --apply-to queues
     perf_test declare_nack_dlq -u nack_dlq  -C 1 -c 1
     perf_test publish_to_nack -x 1 -y 0 -c 1 -u publish_then_nack -qa x-max-length=250000
     perf_test nack_published -x 0 -y 4 -u publish_then_nack -qa x-max-length=250000  --nack --requeue false
-    rabbitmq_admin delete policy name=nack_dlq
+    rabbitmqadmin delete policy --name nack_dlq
     delete_all_queues
 
     ##
@@ -181,8 +181,8 @@ stream_perf_test() {
     sleep 30
 }
 # call rabbitmqadmin against the test env
-rabbitmq_admin() {
-        rabbitmqadmin -H ${RABBITMQ_SERVICE} -u ${RABBITMQ_USER} -p ${RABBITMQ_PASS} $@
+rabbitmqadmin() {
+        rabbitmqadmin-ng --non-interactive --base-uri http://${RABBITMQ_SERVICE} -u ${RABBITMQ_USER} -p ${RABBITMQ_PASS} $@
 }
 
 # wait for the env to be available
@@ -200,8 +200,8 @@ wait_for_cluster() {
 # by default queues are left intact, potentially with some messages
 # WARNING: some tests need the queue(s) from previous tests (eg. when we publish and consume separately)
 delete_all_queues() {
-    for q in $(rabbitmq_admin --format bash list queues); do
-        rabbitmq_admin delete queue name="${q}"
+    for q in $(rabbitmqadmin list queues | awk '{print $1}' | grep -v '^$'); do
+        rabbitmqadmin delete queue --name "${q}"
     done
 }
 
