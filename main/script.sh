@@ -182,7 +182,7 @@ stream_perf_test() {
 }
 # call rabbitmqadmin against the test env
 rabbitmqadmin() {
-        rabbitmqadmin-ng --non-interactive --base-uri "http://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE}" $@
+        rabbitmqadmin-ng --non-interactive --base-uri "http://${RABBITMQ_SERVICE}" --config /tmp/rabbitmqadmin.toml $@
 }
 
 # wait for the env to be available
@@ -204,6 +204,14 @@ delete_all_queues() {
         rabbitmqadmin delete queue --name "${q}"
     done
 }
+
+setup_rabbitmqadmin() {
+    echo '[default]' > /tmp/rabbitmqadmin.toml
+    echo "username = \"${RABBITMQ_USER}\"" >> /tmp/rabbitmqadmin.toml
+    echo "password = \"${RABBITMQ_PASS}\"" >> /tmp/rabbitmqadmin.toml
+}
+
+setup_rabbitmqadmin
 
 wait_for_cluster
 
