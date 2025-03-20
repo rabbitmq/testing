@@ -182,7 +182,7 @@ stream_perf_test() {
 }
 # call rabbitmqadmin against the test env
 rabbitmqadmin() {
-        rabbitmqadmin-ng --non-interactive --base-uri http://${RABBITMQ_SERVICE} -u ${RABBITMQ_USER} -p ${RABBITMQ_PASS} $@
+        rabbitmqadmin-ng --non-interactive --base-uri "http://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE}" $@
 }
 
 # wait for the env to be available
