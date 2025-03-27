@@ -1,45 +1,22 @@
 #@data/values
 ---
 #!
-#! Measure the impact of message embedding (specific to classic queues)
+#! 
 #!
-#! msg_sizes: [4090, 5000]
-msg_sizes: [10230, 10250]
+msg_sizes: [5000, 20000, 100000]
+
+queue_type: classic
+
+#@ image = "pivotalrabbitmq/rabbitmq:main-otp27"
 
 clusters:
-#!  - name: lh-msg-store-embed-below-4096
-#!    replicas: 1
-#!    image: pivotalrabbitmq/rabbitmq:lh-msg-store-otp-max-bazel
-#!    env_flags: -qa x-queue-version=2
-#!    config: |
-#!      queue_index_embed_msgs_below = 4096
-#!  - name: main-embed-below-4096
-#!    replicas: 1
-#!    image: pivotalrabbitmq/rabbitmq:main
-#!    env_flags: -qa x-queue-version=2
-#!    config: |
-#!      queue_index_embed_msgs_below = 4096
-#!  - name: v3-11-embed-below-4096
-#!    replicas: 1
-#!    image: pivotalrabbitmq/rabbitmq:v3.11.x-otp-max-bazel
-#!    env_flags: -qa x-queue-version=2
-#!    config: |
-#!      queue_index_embed_msgs_below = 4096
-  - name: v3-11-embed-below-10240
+  - name: embed-below-4kb
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:v3.11.x-otp-max-bazel
-    env_flags: -qa x-queue-version=2
+    image: #@ image
     config: |
-      queue_index_embed_msgs_below = 10240
-  - name: lh-msg-store-embed-below-10240
+      queue_index_embed_msgs_below = 4096
+  - name: embed-below-16kb
     replicas: 1
-    image: pivotalrabbitmq/rabbitmq:lh-msg-store-otp-max-bazel
-    env_flags: -qa x-queue-version=2
+    image: #@ image
     config: |
-      queue_index_embed_msgs_below = 10240
-  - name: main-embed-below-10240
-    replicas: 1
-    image: pivotalrabbitmq/rabbitmq:main
-    env_flags: -qa x-queue-version=2
-    config: |
-      queue_index_embed_msgs_below = 10240
+      queue_index_embed_msgs_below = 16384
