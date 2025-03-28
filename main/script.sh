@@ -123,7 +123,7 @@ omq_amqp() {
     shift
     # TODO $ENV_FLAGS
     /omq amqp $* -s $MSG_SIZE \
-        --uri amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE}/ \
+        --uri amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE}-server-0.${RABBITMQ_SERVICE}-nodes/ \
         --time ${TIME_PER_TEST}s \
         --metric-tags rabbitmq_cluster=${RABBITMQ_SERVICE},workload_name=${WORKLOAD_NAME},msg_size=${MSG_SIZE} \
         --expected-instances ${ENV_COUNT} \
