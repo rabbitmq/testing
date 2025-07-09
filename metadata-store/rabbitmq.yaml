@@ -1,0 +1,24 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rmq
+  namespace: my-namespace
+spec:
+  image: rabbitmq:4.1-management
+  terminationGracePeriodSeconds: 180
+  rabbitmq:
+    additionalConfig: |
+      management_agent.disable_metrics_collector = true
+      management.disable_stats = true
+      queue_leader_locator = balanced
+  replicas: 3
+  resources:
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 2
+      memory: 2Gi
+  persistence:
+    storage: 10Gi
+    #storageClassName: premium-rwo
