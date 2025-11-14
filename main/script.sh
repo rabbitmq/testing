@@ -121,9 +121,13 @@ queue_type_perf_test_flag() {
 omq_amqp() {
     WORKLOAD_NAME=${1}
     shift
+    URI="amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE}"
+    if [[ "${RABBITMQ_SERVICE}" != "localhost" ]]; then
+	    URI="${URI}-server-0.${RABBITMQ_SERVICE}-nodes/"
+    fi
     # TODO $ENV_FLAGS
     /omq amqp $* -s $MSG_SIZE \
-        --uri amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE}-server-0.${RABBITMQ_SERVICE}-nodes/ \
+        --uri ${URI} \
         --time ${TIME_PER_TEST}s \
         --metric-tags rabbitmq_cluster=${RABBITMQ_SERVICE},workload_name=${WORKLOAD_NAME},msg_size=${MSG_SIZE} \
         --expected-instances ${ENV_COUNT} \
@@ -141,11 +145,16 @@ perf_test() {
     WORKLOAD_NAME=${1}
     shift
 
+    URI="amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE}"
+    if [[ "${RABBITMQ_SERVICE}" != "localhost" ]]; then
+	    URI="${URI}-server-0.${RABBITMQ_SERVICE}-nodes/"
+    fi
+
     # connect to server-0 for consistency between environments and test runs (connection-queue locality)
     # expose Prometheus metrics with additional tags for filtering in the dashboard
     # producer random startup delay to avoid batches of messages being sent at the same time
     java -jar $AMQP_PERF_TEST_JAR $* -s $MSG_SIZE $QUEUE_TYPE_FLAG $ENV_FLAGS \
-        --uri amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@${RABBITMQ_SERVICE}-server-0.${RABBITMQ_SERVICE}-nodes \
+        --uri ${URI} \
         --metrics-prometheus \
         --expected-instances ${ENV_COUNT} \
         --instance-sync-timeout 3600 \
